@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useArtworks } from './hooks/useArtworks';
 import { usePersistentSelection } from './hooks/usePersistentSelection';
 import { ArtworkTable } from './components/ArtworkTable/ArtworkTable';
+import { SelectionOverlay } from './components/SelectionOverlay/SelectionOverlay';
 
 const App = () => {
   const [currentPage, setCurrentPage] = useState<number>(1);
@@ -11,6 +12,12 @@ const App = () => {
 
   return (
     <div style={{ padding: '1rem' }}>
+      <div style={{ marginBottom: '0.75rem' }}>
+        <SelectionOverlay
+        rows={rows}
+        onSelectMany={selection.selectMany}
+        />
+      </div>    
       <ArtworkTable
         rows={rows}
         totalRecords={totalRecords}
