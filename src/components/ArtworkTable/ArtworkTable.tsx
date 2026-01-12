@@ -1,18 +1,12 @@
-import { DataTable} from 'primereact/datatable';
-import type{ DataTablePageEvent} from 'primereact/datatable';
+import { DataTable } from 'primereact/datatable';
+import type {
+  DataTablePageEvent,
+  DataTableSelectionMultipleChangeEvent,
+} from 'primereact/datatable';
 import { Column } from 'primereact/column';
-import type{ Artwork } from '../../types/artwork.types';
 
-interface ArtworkTableProps {
-  rows: Artwork[];
-  totalRecords: number;
-  loading: boolean;
-  currentPage: number;
-  onPageChange: (page: number) => void;
-}
-const textTemplate = (value: string | null) => {
-  return value ? value : '—';
-};
+import type { Artwork } from '../../types/artwork.types';
+import type { ArtworkTableProps } from './ArtworkTable.types';
 
 export const ArtworkTable = ({
   rows,
@@ -20,36 +14,57 @@ export const ArtworkTable = ({
   loading,
   currentPage,
   onPageChange,
+  isRowSelected,
+  onSelectMany,
+  onUnselectMany,
 }: ArtworkTableProps) => {
   const handlePageChange = (event: DataTablePageEvent) => {
-    // PrimeReact paginator is zero-based
-    if (typeof event.page !== 'number') {
-        return;
-    }
+    if (typeof event.page !== 'number') return;
     onPageChange(event.page + 1);
   };
 
-  return (
+  const handleSelectionChange = (
+    event: DataTableSelectionMultipleChangeEvent<Artwork[]>
+  ) => {
+    const selectedRows = event.value ?? [];
+    const selectedIds = selectedRows.map((row) => row.id);
+    const currentPageIds = rows.map((row) => row.id);
 
+    onSelectMany(selectedIds);
+
+    const unselectedIds = currentPageIds.filter(
+      (id) => !selectedIds.includes(id)
+    );
+    onUnselectMany(unselectedIds);
+  };
+
+  const selectedRows = rows.filter((row) => isRowSelected(row.id));
+
+  return (
     <DataTable
-    value={rows}
-    lazy
-    paginator
-    rows={12}
-    totalRecords={totalRecords}
-    loading={loading}
-    first={(currentPage - 1) * 12}
-    onPage={handlePageChange}
-    dataKey="id"
-    responsiveLayout="scroll"
-    tableStyle={{ tableLayout: 'fixed' }}
+      value={rows}
+      dataKey="id"
+      lazy
+      paginator
+      rows={12}
+      totalRecords={totalRecords}
+      loading={loading}
+      first={(currentPage - 1) * 12}
+      onPage={handlePageChange}
+      selection={selectedRows}
+      selectionMode="checkbox"
+      onSelectionChange={handleSelectionChange}
+      tableStyle={{ tableLayout: 'fixed' }}
+      responsiveLayout="scroll"
     >
-        <Column field="title" header="Title" style={{ width: '16rem' }} />
-        <Column field="place_of_origin" header="Place of Origin" style={{ width: '8rem' }} />
-        <Column field="artist_display" header="Artist" body={(row) => textTemplate(row.artist_display)} style={{ width: '24rem' }} />
-        <Column field="inscriptions" header="Inscriptions" body={(row) => textTemplate(row.inscriptions)} style={{ width: '20rem' }} />
-        <Column field="date_start" header="Date Start" style={{ width: '6rem' }} />
-        <Column field="date_end" header="Date End" style={{ width: '6rem' }} />
+      <Column selectionMode="multiple" headerStyle={{ width: '3rem' }} />
+
+      <Column field="title" header="Title" style={{ width: '20rem' }} />
+      <Column field="place_of_origin" header="Place of Origin" style={{ width: '12rem' }} />
+      <Column field="artist_display" header="Artist" style={{ width: '18rem' }} />
+      <Column field="inscriptions" header="Inscriptions" style={{ width: '22rem' }} />
+      <Column field="date_start" header="Date Start" style={{ width: '8rem' }} />
+      <Column field="date_end" header="Date End" style={{ width: '8rem' }} />
     </DataTable>
   );
 };
