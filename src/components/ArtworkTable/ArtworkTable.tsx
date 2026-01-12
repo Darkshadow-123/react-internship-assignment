@@ -10,6 +10,9 @@ interface ArtworkTableProps {
   currentPage: number;
   onPageChange: (page: number) => void;
 }
+const textTemplate = (value: string | null) => {
+  return value ? value : '—';
+};
 
 export const ArtworkTable = ({
   rows,
@@ -27,24 +30,26 @@ export const ArtworkTable = ({
   };
 
   return (
+
     <DataTable
-      value={rows}
-      lazy
-      paginator
-      rows={12}
-      totalRecords={totalRecords}
-      loading={loading}
-      first={(currentPage - 1) * 12}
-      onPage={handlePageChange}
-      dataKey="id"
-      responsiveLayout="scroll"
+    value={rows}
+    lazy
+    paginator
+    rows={12}
+    totalRecords={totalRecords}
+    loading={loading}
+    first={(currentPage - 1) * 12}
+    onPage={handlePageChange}
+    dataKey="id"
+    responsiveLayout="scroll"
+    tableStyle={{ tableLayout: 'fixed' }}
     >
-      <Column field="title" header="Title" />
-      <Column field="place_of_origin" header="Place of Origin" />
-      <Column field="artist_display" header="Artist" />
-      <Column field="inscriptions" header="Inscriptions" />
-      <Column field="date_start" header="Date Start" />
-      <Column field="date_end" header="Date End" />
+        <Column field="title" header="Title" style={{ width: '16rem' }} />
+        <Column field="place_of_origin" header="Place of Origin" style={{ width: '8rem' }} />
+        <Column field="artist_display" header="Artist" body={(row) => textTemplate(row.artist_display)} style={{ width: '24rem' }} />
+        <Column field="inscriptions" header="Inscriptions" body={(row) => textTemplate(row.inscriptions)} style={{ width: '20rem' }} />
+        <Column field="date_start" header="Date Start" style={{ width: '6rem' }} />
+        <Column field="date_end" header="Date End" style={{ width: '6rem' }} />
     </DataTable>
   );
 };
