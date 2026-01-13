@@ -1,0 +1,8 @@
+/* PrimeReact Theme */
+@import 'primereact/resources/themes/lara-light-blue/theme.css';
+
+/* PrimeReact Core */
+@import 'primereact/resources/primereact.min.css';
+
+/* PrimeIcons */
+@import 'primeicons/primeicons.css';

@@ -16,6 +16,7 @@ const App = () => {
         <SelectionOverlay
         rows={rows}
         onSelectMany={selection.selectMany}
+        selectedCount={selection.selectedCount}
         />
       </div>    
       <ArtworkTable

@@ -18,6 +18,10 @@ export const usePersistentSelection = () => {
     });
   };
 
+  const selectedCount = Array.from(selectionState.selectedIds).filter(
+  (id) => !selectionState.deselectedIds.has(id)).length;
+
+
   const unselectOne = (id: number) => {
     setSelectionState((prev) => {
       const selectedIds = new Set(prev.selectedIds);
@@ -68,6 +72,7 @@ export const usePersistentSelection = () => {
   return {
     selectedIds: selectionState.selectedIds,
     deselectedIds: selectionState.deselectedIds,
+    selectedCount,
     isSelected,
     selectOne,
     unselectOne,

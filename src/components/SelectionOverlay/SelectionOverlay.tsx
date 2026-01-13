@@ -8,9 +8,10 @@ import type { Artwork } from '../../types/artwork.types';
 interface SelectionOverlayProps {
   rows: Artwork[];
   onSelectMany: (ids: number[]) => void;
+  selectedCount: number;
 }
 
-export const SelectionOverlay = ({ rows, onSelectMany }: SelectionOverlayProps) => {
+export const SelectionOverlay = ({ rows, onSelectMany , selectedCount }: SelectionOverlayProps) => {
   const overlayRef = useRef<OverlayPanel>(null);
   const [count, setCount] = useState<number | null>(null);
 
@@ -28,6 +29,9 @@ export const SelectionOverlay = ({ rows, onSelectMany }: SelectionOverlayProps) 
 
   return (
     <>
+      <div style={{ marginBottom: '0.25rem', fontSize: '0.9rem', color: '#555' }}>
+        <strong>Select:</strong> {selectedCount} rows
+      </div>    
       <Button
         label="Select Rows"
         icon="pi pi-check-square"

@@ -56,6 +56,8 @@ export const ArtworkTable = ({
       onSelectionChange={handleSelectionChange}
       tableStyle={{ tableLayout: 'fixed' }}
       responsiveLayout="scroll"
+      paginatorTemplate="CurrentPageReport PrevPageLink PageLinks NextPageLink"
+      currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
     >
       <Column selectionMode="multiple" headerStyle={{ width: '3rem' }} />
 
